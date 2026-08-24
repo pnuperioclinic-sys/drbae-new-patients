@@ -1,0 +1,252 @@
+<title>신환 추이 2025·2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+
+<style>
+:root{
+  color-scheme: light;
+  --page:#f5f7f8; --surface:#ffffff; --surface-2:#f0f3f5;
+  --ink:#0e141a; --ink-2:#4b5762; --ink-3:#7c8792;
+  --grid:#e5e9ec; --axis:#c8d0d6; --hair:rgba(14,20,26,.10);
+  --s25:#2a78d6; --s26:#eb6834; --bad:#b32e2e; --good:#006300;
+  --shadow:0 1px 2px rgba(14,20,26,.05), 0 8px 24px -18px rgba(14,20,26,.3);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0b0f13; --surface:#141a20; --surface-2:#1b232b;
+    --ink:#eef2f5; --ink-2:#a6b1bb; --ink-3:#7c8792;
+    --grid:#232c35; --axis:#374350; --hair:rgba(238,242,245,.12);
+    --s25:#3987e5; --s26:#d95926; --bad:#f08a8a; --good:#0ca30c;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0b0f13; --surface:#141a20; --surface-2:#1b232b;
+  --ink:#eef2f5; --ink-2:#a6b1bb; --ink-3:#7c8792;
+  --grid:#232c35; --axis:#374350; --hair:rgba(238,242,245,.12);
+  --s25:#3987e5; --s26:#d95926; --bad:#f08a8a; --good:#0ca30c;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--page); color:var(--ink);
+  font-family:"IBM Plex Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size:16px; line-height:1.6;
+}
+.wrap{max-width:940px; margin:0 auto; padding:56px 24px 80px}
+
+header{border-bottom:1px solid var(--hair); padding-bottom:28px; margin-bottom:32px}
+.eyebrow{
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+}
+h1{font-size:clamp(26px,3.6vw,34px); font-weight:700; letter-spacing:-.02em; margin:10px 0 0; text-wrap:balance}
+header p{color:var(--ink-2); font-size:15px; margin:12px 0 0; max-width:64ch}
+header p b{color:var(--bad); font-weight:600}
+
+.tiles{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-bottom:36px}
+.tile{background:var(--surface); border:1px solid var(--hair); border-radius:10px; padding:18px; box-shadow:var(--shadow)}
+.tile .lab{font-size:12.5px; color:var(--ink-2)}
+.tile .val{display:flex; align-items:baseline; gap:8px; margin-top:8px;
+  font-variant-numeric:tabular-nums}
+.tile .from{font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--ink-3)}
+.tile .arrow{color:var(--ink-3); font-size:13px}
+.tile .to{font-size:28px; font-weight:700; letter-spacing:-.02em}
+.tile .d{margin-top:8px; font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600}
+.tile .d.dn{color:var(--bad)} .tile .d.up{color:var(--good)}
+
+.card{background:var(--surface); border:1px solid var(--hair); border-radius:12px;
+  padding:22px 22px 14px; box-shadow:var(--shadow); margin-bottom:22px}
+.card-top{display:flex; justify-content:space-between; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:10px}
+.card-top h2{font-size:16px; font-weight:600; margin:0}
+.legend{display:flex; gap:16px}
+.legend span{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2)}
+.key{width:12px; height:12px; border-radius:3px; flex:none}
+.chart svg{display:block; width:100%; height:auto}
+.note{font-size:12px; color:var(--ink-3); margin:8px 0 0}
+
+.tablewrap{overflow-x:auto; background:var(--surface); border:1px solid var(--hair);
+  border-radius:12px; box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; min-width:680px; font-size:13.5px}
+th,td{padding:10px 14px; text-align:right; white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.06em;
+  color:var(--ink-3); font-weight:400; background:var(--surface-2); border-bottom:1px solid var(--hair)}
+thead th.g25{color:var(--s25)} thead th.g26{color:var(--s26)}
+tbody td{border-bottom:1px solid var(--grid); color:var(--ink-2); font-variant-numeric:tabular-nums}
+tbody td.k{color:var(--ink); font-weight:600; font-family:"IBM Plex Mono",monospace}
+tbody td.dn{color:var(--bad); font-weight:600; font-family:"IBM Plex Mono",monospace}
+tbody td.up{color:var(--good); font-weight:600; font-family:"IBM Plex Mono",monospace}
+tfoot td{background:var(--surface-2); color:var(--ink); font-weight:700;
+  border-top:1px solid var(--hair); font-variant-numeric:tabular-nums}
+.divider{border-left:1px solid var(--hair)}
+
+footer{margin-top:36px; color:var(--ink-3); font-size:12.5px}
+@media (max-width:760px){ .tiles{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">2025 vs 2026 · 월별 비교</div>
+  <h1>신환 수 &amp; 접수환자 수</h1>
+  <p>3~7월(진료일수 양년 모두 125일로 동일) 기준입니다. 접수환자 수는 4% 줄었을 뿐이지만,
+     <b>신환은 250명, 21% 줄었습니다.</b> 기존 환자분들은 오고 계시고, 빠진 건 새로 오는 분들입니다.</p>
+</header>
+
+<div class="tiles" id="tiles"></div>
+
+<div class="card">
+  <div class="card-top">
+    <h2>월별 신환 수</h2>
+    <div class="legend">
+      <span><i class="key" style="background:var(--s25)"></i>2025년</span>
+      <span><i class="key" style="background:var(--s26)"></i>2026년</span>
+    </div>
+  </div>
+  <div class="chart" id="cNew"></div>
+  <p class="note">2025년 2월은 자료 없음 · 2026년 8월은 8/22(17진료일)까지 진행 중</p>
+</div>
+
+<div class="card">
+  <div class="card-top">
+    <h2>월별 접수환자 수</h2>
+    <div class="legend">
+      <span><i class="key" style="background:var(--s25)"></i>2025년</span>
+      <span><i class="key" style="background:var(--s26)"></i>2026년</span>
+    </div>
+  </div>
+  <div class="chart" id="cReg"></div>
+  <p class="note">전체 접수환자 수는 거의 유지되고 있습니다 — 감소는 신환 한 곳에 몰려 있습니다.</p>
+</div>
+
+<div class="tablewrap">
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th rowspan="2">월</th>
+        <th class="g25" colspan="3">2025년</th>
+        <th class="g26 divider" colspan="3">2026년</th>
+        <th rowspan="2">신환/일 증감</th>
+      </tr>
+      <tr>
+        <th class="g25">진료일</th><th class="g25">신환</th><th class="g25">접수환자</th>
+        <th class="g26 divider">진료일</th><th class="g26">신환</th><th class="g26">접수환자</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot></tfoot>
+  </table>
+</div>
+
+<footer>
+  출처: 월별 일별접수환자수 자료 (2025년 3~8월, 2026년 2~8월) · 기준일 2026-08-24
+</footer>
+</div>
+
+<script>
+const M = [
+  {m:2, a:null,                       b:{d:20,n:181,r:754}},
+  {m:3, a:{d:24,n:221,r:792},         b:{d:25,n:205,r:865}},
+  {m:4, a:{d:26,n:243,r:878},         b:{d:26,n:187,r:843}},
+  {m:5, a:{d:24,n:241,r:835},         b:{d:23,n:182,r:790}},
+  {m:6, a:{d:24,n:238,r:832},         b:{d:25,n:184,r:776}},
+  {m:7, a:{d:27,n:243,r:908},         b:{d:26,n:178,r:800}},
+  {m:8, a:{d:25,n:250,r:865},         b:{d:17,n:110,r:597, partial:true}}
+];
+const CORE = M.filter(x => x.m >= 3 && x.m <= 7);
+const sum = (f) => ({a:CORE.reduce((s,x)=>s+f(x.a),0), b:CORE.reduce((s,x)=>s+f(x.b),0)});
+const D = sum(x=>x.d), N = sum(x=>x.n), R = sum(x=>x.r);
+const f1 = v => v.toFixed(1);
+const cm = v => v.toLocaleString('ko-KR');
+
+/* ── 요약 타일 ── */
+document.getElementById('tiles').innerHTML = [
+  {lab:'신환 수 (3~7월 합계)', from:cm(N.a), to:cm(N.b), u:'명',
+   d:(N.b-N.a)+'명 · '+f1((N.b/N.a-1)*100)+'%'},
+  {lab:'진료일당 신환 수', from:f1(N.a/D.a), to:f1(N.b/D.b), u:'명',
+   d:f1(N.b/D.b-N.a/D.a)+'명 · '+f1(((N.b/D.b)/(N.a/D.a)-1)*100)+'%'},
+  {lab:'접수환자 수 (3~7월 합계)', from:cm(R.a), to:cm(R.b), u:'명',
+   d:(R.b-R.a)+'명 · '+f1((R.b/R.a-1)*100)+'%'}
+].map(t => `
+  <div class="tile">
+    <div class="lab">${t.lab}</div>
+    <div class="val"><span class="from">${t.from}</span><span class="arrow">→</span><span class="to">${t.to}</span><span class="from">${t.u}</span></div>
+    <div class="d ${t.d.startsWith('-') ? 'dn' : 'up'}">${t.d}</div>
+  </div>`).join('');
+
+/* ── 묶은 막대 그래프 ── */
+const NS = 'http://www.w3.org/2000/svg';
+const mk = (tag, at, tx) => {
+  const n = document.createElementNS(NS, tag);
+  for (const k in at) n.setAttribute(k, at[k]);
+  if (tx != null) n.textContent = tx;
+  return n;
+};
+const tickStyle = 'font-family:"IBM Plex Mono",monospace;font-size:11px;fill:var(--ink-3)';
+const labStyle  = 'font-family:"IBM Plex Sans KR",sans-serif;font-size:12px;fill:var(--ink-2)';
+const valStyle  = 'font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;fill:var(--ink)';
+
+function bars(hostId, key, maxY, step, label){
+  const host = document.getElementById(hostId);
+  const W = 860, H = 300, ML = 46, MR = 12, MT = 20, MB = 42;
+  const pw = W-ML-MR, ph = H-MT-MB;
+  const svg = mk('svg', {viewBox:`0 0 ${W} ${H}`, role:'img', 'aria-label':label});
+  const y = v => MT + ph - v/maxY*ph;
+
+  for (let t = 0; t <= maxY; t += step){
+    svg.appendChild(mk('line',{x1:ML, x2:W-MR, y1:y(t), y2:y(t),
+      stroke: t ? 'var(--grid)' : 'var(--axis)', 'stroke-width':1}));
+    svg.appendChild(mk('text',{x:ML-10, y:y(t)+4, 'text-anchor':'end', style:tickStyle}, cm(t)));
+  }
+
+  const band = pw/M.length, BW = Math.min(20, band/2.9);
+  M.forEach((row, i) => {
+    const cx = ML + band*i + band/2;
+    svg.appendChild(mk('text',{x:cx, y:H-MB+22, 'text-anchor':'middle', style:labStyle}, row.m+'월'));
+    [[row.a,'var(--s25)',-1], [row.b,'var(--s26)',1]].forEach(([dat, col, side]) => {
+      const x = cx + side*1 + (side < 0 ? -BW : 0);
+      if (!dat){
+        svg.appendChild(mk('text',{x:x+BW/2, y:y(0)-8, 'text-anchor':'middle', style:tickStyle}, '—'));
+        return;
+      }
+      const v = dat[key], h = Math.max(5, y(0)-y(v));
+      svg.appendChild(mk('path',{
+        d:`M${x} ${y(0)} v${-(h-4)} a4 4 0 0 1 4 -4 h${BW-8} a4 4 0 0 1 4 4 v${h-4} z`,
+        fill:col, opacity: dat.partial ? .55 : 1
+      }));
+      svg.appendChild(mk('text',{x:x+BW/2, y:y(v)-8, 'text-anchor':'middle', style:valStyle}, cm(v)));
+    });
+  });
+  host.appendChild(svg);
+}
+bars('cNew', 'n', 300, 50, '월별 신환 수 2025년 대 2026년 묶은 막대그래프');
+bars('cReg', 'r', 1000, 200, '월별 접수환자 수 2025년 대 2026년 묶은 막대그래프');
+
+/* ── 표 ── */
+document.querySelector('#tbl tbody').innerHTML = M.map(row => {
+  const bp = row.b.n/row.b.d, ap = row.a ? row.a.n/row.a.d : null;
+  const diff = ap == null ? null : bp - ap;
+  return `<tr>
+    <td class="k">${row.m}월${row.b.partial ? ' <span style="font-weight:400;color:var(--ink-3)">(진행 중)</span>' : ''}</td>
+    <td>${row.a ? row.a.d : '—'}</td>
+    <td>${row.a ? cm(row.a.n) : '—'}</td>
+    <td>${row.a ? cm(row.a.r) : '—'}</td>
+    <td class="divider">${row.b.d}</td>
+    <td>${cm(row.b.n)}</td>
+    <td>${cm(row.b.r)}</td>
+    <td class="${diff == null ? '' : (diff < 0 ? 'dn' : 'up')}">${diff == null ? '—' : (diff > 0 ? '+' : '') + f1(diff)}</td>
+  </tr>`;
+}).join('');
+document.querySelector('#tbl tfoot').innerHTML = `<tr>
+  <td>3~7월 합계</td>
+  <td>${D.a}</td><td>${cm(N.a)}</td><td>${cm(R.a)}</td>
+  <td class="divider">${D.b}</td><td>${cm(N.b)}</td><td>${cm(R.b)}</td>
+  <td style="color:var(--bad)">${f1(N.b/D.b - N.a/D.a)}</td>
+</tr>`;
+</script>
