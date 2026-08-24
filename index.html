@@ -63,6 +63,8 @@ header p b{color:var(--bad); font-weight:600}
   padding:22px 22px 14px; box-shadow:var(--shadow); margin-bottom:22px}
 .card-top{display:flex; justify-content:space-between; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:10px}
 .card-top h2{font-size:16px; font-weight:600; margin:0}
+.card .sub{font-size:13px; color:var(--ink-2); margin:0 0 6px; max-width:64ch}
+.card .sub b{color:var(--ink); font-weight:600}
 .legend{display:flex; gap:16px}
 .legend span{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2)}
 .key{width:12px; height:12px; border-radius:3px; flex:none}
@@ -96,7 +98,8 @@ footer{margin-top:36px; color:var(--ink-3); font-size:12.5px}
   <div class="eyebrow">2025 vs 2026 · 월별 비교</div>
   <h1>신환 수 &amp; 접수환자 수</h1>
   <p>3~7월(진료일수 양년 모두 125일로 동일) 기준입니다. 접수환자 수는 4% 줄었을 뿐이지만,
-     <b>신환은 250명, 21% 줄었습니다.</b> 기존 환자분들은 오고 계시고, 빠진 건 새로 오는 분들입니다.</p>
+     <b>신환은 250명, 21% 줄었습니다.</b> 기존 환자분들은 오고 계시고, 빠진 건 새로 오는 분들입니다.
+     더 문제는 <b>2026년 안에서도 계속 내려가고 있다는 것</b>입니다 — 진료일당 신환이 2월 9.1명에서 8월 6.5명까지 떨어졌습니다.</p>
 </header>
 
 <div class="tiles" id="tiles"></div>
@@ -111,6 +114,15 @@ footer{margin-top:36px; color:var(--ink-3); font-size:12.5px}
   </div>
   <div class="chart" id="cNew"></div>
   <p class="note">2025년 2월은 자료 없음 · 2026년 8월은 8/22(17진료일)까지 진행 중</p>
+</div>
+
+<div class="card">
+  <div class="card-top">
+    <h2>2026년 안에서도 계속 내려가고 있습니다</h2>
+  </div>
+  <p class="sub">진료일당 신환 수. 휴진일이 많고 적은 영향을 걷어내고 <b>하루에 몇 명이 새로 왔는지</b>만 본 값입니다.</p>
+  <div class="chart" id="cTrend"></div>
+  <p class="note">2026년 8월은 8/22까지 진행 중이며, 지난 2년을 통틀어 가장 낮은 수치입니다.</p>
 </div>
 
 <div class="card">
@@ -227,6 +239,60 @@ function bars(hostId, key, maxY, step, label){
 }
 bars('cNew', 'n', 300, 50, '월별 신환 수 2025년 대 2026년 묶은 막대그래프');
 bars('cReg', 'r', 1000, 200, '월별 접수환자 수 2025년 대 2026년 묶은 막대그래프');
+
+/* ── 2026년 진료일당 신환 수 추이 ── */
+(function(){
+  const host = document.getElementById('cTrend');
+  const W = 860, H = 300, ML = 46, MR = 96, MT = 30, MB = 42;
+  const pw = W-ML-MR, ph = H-MT-MB, maxY = 10;
+  const P = M.map(row => ({m:row.m, v:row.b.n/row.b.d, partial:row.b.partial}));
+  const base = N.a/D.a;                      // 2025년 3~7월 진료일당 신환
+  const svg = mk('svg',{viewBox:`0 0 ${W} ${H}`, role:'img',
+    'aria-label':'2026년 월별 진료일당 신환 수 추이 선그래프'});
+  const y = v => MT + ph - v/maxY*ph;
+  const x = i => ML + pw/(P.length-1)*i;
+
+  for (let t = 0; t <= maxY; t += 2){
+    svg.appendChild(mk('line',{x1:ML, x2:ML+pw, y1:y(t), y2:y(t),
+      stroke: t ? 'var(--grid)' : 'var(--axis)', 'stroke-width':1}));
+    svg.appendChild(mk('text',{x:ML-10, y:y(t)+4, 'text-anchor':'end', style:tickStyle}, t));
+  }
+  P.forEach((p,i) => svg.appendChild(
+    mk('text',{x:x(i), y:H-MB+22, 'text-anchor':'middle', style:labStyle}, p.m+'월')));
+
+  // 2025년 평균 기준선
+  svg.appendChild(mk('line',{x1:ML, x2:ML+pw, y1:y(base), y2:y(base),
+    stroke:'var(--s25)', 'stroke-width':1.5, opacity:.8}));
+  svg.appendChild(mk('text',{x:ML+pw+10, y:y(base)-3,
+    style:labStyle+';fill:var(--s25);font-weight:600'}, '2025년 평균'));
+  svg.appendChild(mk('text',{x:ML+pw+10, y:y(base)+13, style:valStyle+';fill:var(--s25)'}, f1(base)+'명'));
+
+  // 면적 + 선
+  svg.appendChild(mk('path',{
+    d:`M${x(0)} ${y(0)} ` + P.map((p,i)=>`L${x(i)} ${y(p.v)}`).join(' ') + ` L${x(P.length-1)} ${y(0)} Z`,
+    fill:'var(--s26)', opacity:.10
+  }));
+  svg.appendChild(mk('path',{
+    d: P.map((p,i)=>(i?'L':'M')+x(i)+' '+y(p.v)).join(' '),
+    fill:'none', stroke:'var(--s26)', 'stroke-width':2,
+    'stroke-linejoin':'round', 'stroke-linecap':'round'
+  }));
+  P.forEach((p,i) => svg.appendChild(mk('circle',{
+    cx:x(i), cy:y(p.v), r:4.5, fill:'var(--s26)', stroke:'var(--surface)', 'stroke-width':2})));
+
+  // 처음과 마지막만 직접 표기
+  const first = P[0], last = P[P.length-1], li = P.length-1;
+  svg.appendChild(mk('text',{x:x(0)+4, y:y(first.v)+20, 'text-anchor':'middle', style:valStyle}, f1(first.v)+'명'));
+  svg.appendChild(mk('text',{x:x(li)+10, y:y(last.v)+4, style:valStyle+';fill:var(--s26)'}, f1(last.v)+'명'));
+  svg.appendChild(mk('text',{x:x(li)+10, y:y(last.v)+20, style:tickStyle}, '8/22까지'));
+
+  // 2월 → 8월 감소폭
+  svg.appendChild(mk('text',{x:ML+pw/2, y:MT-12, 'text-anchor':'middle',
+    style:labStyle+';fill:var(--bad);font-weight:600'},
+    `2월 → 8월  ${f1(last.v-first.v)}명 (${f1((last.v/first.v-1)*100)}%)`));
+
+  host.appendChild(svg);
+})();
 
 /* ── 표 ── */
 document.querySelector('#tbl tbody').innerHTML = M.map(row => {
